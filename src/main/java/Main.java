@@ -1,4 +1,5 @@
-import models.Word;
+import models.Car;
+import models.Type;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -6,7 +7,6 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -17,34 +17,31 @@ public class Main {
                 .build();
 
         Metadata metadata = new MetadataSources(serviceRegistry)
-                .addAnnotatedClass(Word.class)
+                .addAnnotatedClass(Car.class)
                 .getMetadataBuilder()
                 .build();
 
         SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+                Car car = new Car("BMW", Type.VEHICLE,230,23.500,2021);
+                session.save(car);
+                session.save(new Car("Mercedes",Type.VEHICLE,537,47.500,2024));
+                session.save(new Car("Toyota",Type.TRUCK,287,50.500,2020));
+                session.save(new Car("Lexus",Type.TRUCK,480,70.900,2022));
 
-        Word word1 = new Word(1,"honey");
-        session.save(word1);
-        Word word2 = new Word(2,"money");
-        session.save(word2);
-        Word word3 = new Word(3,"funny");
-        session.save(word3);
-        Word word4 = new Word(4,"nanny");
-        session.save(word4);
 
-//        session.save(new Word(1,"honey"));
-//        - дістати всі value слів та запакувати в List .
 
 
         session.getTransaction().commit();
-//        List<Word> list = session.createNativeQuery("select * from word_hike", Word.class).getResultList();
-//        List<Word> list = session.createQuery("select w from Word w", Word.class).getResultList();
-//        System.out.println(list);
 
-//        List<Integer> resultList = session.createQuery("select w.id from  Word w", Integer.class).getResultList();
+//        List<Car> resultList = session.createNativeQuery("select * from my_Car", Car.class).getResultList();
 //        System.out.println(resultList);
+
+//        List<Car> carList = session.createQuery("select c from Car c", Car.class).getResultList();
+//        System.out.println(carList);
+//        List<Double> priceList = session.createQuery("select c.price from Car c", Double.class).getResultList();
+//        System.out.println(priceList);
 
 
         session.close();
@@ -52,5 +49,10 @@ public class Main {
 
     }
 }
-
-//List<Integer> idList = session.createQuery("select x.id from User x", Integer.class).getResultList();
+//Створити клас Car з полями:
+//id
+//        model,
+//Type (ENUM)
+//power,
+//price,
+//year.
