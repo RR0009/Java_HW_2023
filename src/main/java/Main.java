@@ -1,4 +1,6 @@
-import models.Word;
+import models.Gender;
+import models.Pasport;
+import models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -17,7 +19,8 @@ public class Main {
                 .build();
 
         Metadata metadata = new MetadataSources(serviceRegistry)
-                .addAnnotatedClass(Word.class)
+                .addAnnotatedClass(User.class)
+                .addAnnotatedClass(Pasport.class)
                 .getMetadataBuilder()
                 .build();
 
@@ -25,32 +28,26 @@ public class Main {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Word word1 = new Word(1,"honey");
-        session.save(word1);
-        Word word2 = new Word(2,"money");
-        session.save(word2);
-        Word word3 = new Word(3,"funny");
-        session.save(word3);
-        Word word4 = new Word(4,"nanny");
-        session.save(word4);
 
-//        session.save(new Word(1,"honey"));
-//        - дістати всі value слів та запакувати в List .
+        session.save(new User("Ruslan",Gender.MALE,Arrays.asList("Java", "js"),new Pasport("dhhdhdhdh")));
+        session.save(new User("Nikita",Gender.MALE,Arrays.asList("Java", "js"),new Pasport("dfmfmfmfm")));
+        session.save(new User("Katya",Gender.FEMALE,Arrays.asList("Java", "js"),new Pasport("fjfjfkkflf")));
+        session.save(new User("Nasty",Gender.FEMALE,Arrays.asList("Java", "js"),new Pasport("lckjvjvjvj")));
+        session.save(new User("Jack",Gender.MALE,Arrays.asList("Java", "js"),new Pasport("kkhkhkhlhl")));
+
+
+
 
 
         session.getTransaction().commit();
-//        List<Word> list = session.createNativeQuery("select * from word_hike", Word.class).getResultList();
-//        List<Word> list = session.createQuery("select w from Word w", Word.class).getResultList();
-//        System.out.println(list);
 
-//        List<Integer> resultList = session.createQuery("select w.id from  Word w", Integer.class).getResultList();
-//        System.out.println(resultList);
+//        session.createQuery("select p.user from Passport p",User.class).getResultList().forEach(System.out::println);
+//            session.createQuery("select u from User u",User.class).getResultList().forEach(System.out::println);
 
+                session.createQuery("select p.user from Pasport p",User.class).getResultList().forEach(user -> System.out.println(user));
 
         session.close();
         sessionFactory.close();
 
     }
 }
-
-//List<Integer> idList = session.createQuery("select x.id from User x", Integer.class).getResultList();
